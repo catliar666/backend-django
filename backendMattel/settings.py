@@ -14,6 +14,8 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 from datetime import timedelta
+import dj_database_url
+
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,12 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "False").lower() in ["true", "1"]
+DEBUG = os.getenv("DEBUG")
 
-import os
-
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
-
+ALLOWED_HOSTS = ["*"] 
 CORS_ALLOWED_ORIGINS = os.getenv("CORS_ORIGINS", "").split(",")
 
 # Application definition
@@ -78,21 +77,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backendMattel.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'mssql',
-        'NAME': os.getenv("DATABASE"), 
-        'USER': os.getenv("USER"),
-        'PASSWORD': os.getenv("PASSWORD"),
-        'HOST': os.getenv("HOST"),
-        'PORT': os.getenv("PORT"),
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
-            'encrypt': True,  
-            'trust_server_certificate': False, 
-            'timeout': 30,
-        },
-    }
+    'default': dj_database_url.config(
+        default=os.getenv("HOST"),
+        conn_max_age=600
+    )
 }
+
+
 
 
 # Password validation
@@ -129,7 +120,10 @@ SIMPLE_JWT = {
 }
 
 # Configuración CORS
-
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Agrega aquí la URL de tu frontend
+    "https://tu-frontend.netlify.app",
+]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 CORS_ALLOW_HEADERS = ["*"]
@@ -140,6 +134,9 @@ TIME_ZONE = 'Europe/Madrid'
 USE_I18N = True
 USE_TZ = True
 
+# Archivos estáticos
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Archivos multimedia (uploads de imágenes, etc.)
 MEDIA_URL = '/media/'
