@@ -28,6 +28,9 @@ DEBUG = os.getenv("DEBUG")
 ALLOWED_HOSTS = ["*"] 
 CORS_ALLOWED_ORIGINS = os.getenv("CORS_ORIGINS", "").split(",")
 
+AUTH_USER_MODEL = 'projects.Usuario'
+
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -106,8 +109,10 @@ REST_FRAMEWORK = {
 
 # Configuración de Simple JWT
 SIMPLE_JWT = {
+    #El access token es para verificarse, mientras que el refresh token es para que, cuando cumpla el access token, se pida uno nuevo
+    #con el refresh, (se supone) por ello debe tener más tiempo de vencimiento que el access token
     'ACCESS_TOKEN_LIFETIME': timedelta(days=7),  # Expira en 7 días
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Expira en 7 días
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=9),  # Expira en 9 días
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True, 
     'ALGORITHM': 'HS256',
