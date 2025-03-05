@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from .models import Personajes, Mascotas, Ediciones, Skullectors, Usuario
 from rest_framework import viewsets, filters, status, permissions
 from .permisions import IsAdminOrReadOnly
-from .serializers import PersonajesSerializer, MascotasCompletaSerializer, CompletoSerializer, EdicionCompletaSerializer, SkullectorCompletaSerializer, RegisterSerializer, LoginSerializer
+from .serializers import PersonajesSerializer, MascotasCompletaSerializer, CompletoSerializer, EdicionCompletaSerializer, UserSerializer, SkullectorCompletaSerializer, RegisterSerializer, LoginSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -716,4 +716,9 @@ class LogoutView(APIView):
         except Exception:
             return Response({"error": "Token inválido o ya expirado"}, status=400)
 
+class UsuarioViewSet(viewsets.ModelViewSet):
+    queryset = Usuario.objects.all()
+    serializer_class = UserSerializer
 
+    # La acción partial_update (PATCH) ya está implementada por defecto,
+    # por lo que no necesitas sobrescribirla a menos que requieras lógica adicional.

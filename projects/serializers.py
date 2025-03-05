@@ -6,9 +6,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 # Usuario = get_user_model()
 
-from rest_framework import serializers
-from .models import Foto, Personajes
-
 class FotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Foto

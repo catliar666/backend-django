@@ -122,6 +122,25 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None):
         send_mail(subject, message, from_email, [self.email])
 
+    def partial_update(self, **kwargs):
+        allowed_fields = [
+            'username',
+            'first_name',
+            'last_name',
+            'profile_picture',
+            'description',
+            'gender',
+            'pronouns'
+        ]
+        updated_fields = []
+        for field, value in kwargs.items():
+            if field in allowed_fields:
+                setattr(self, field, value)
+                updated_fields.append(field)
+        if updated_fields:
+            self.save(update_fields=updated_fields)
+        return self
+
 
 class Personajes(models.Model):
     id = models.AutoField(primary_key=True)
