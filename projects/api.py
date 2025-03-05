@@ -132,7 +132,7 @@ class EdicionesViewSet(viewsets.ModelViewSet):
 
     def update(self, request, pk=None):
         try:
-            edicion = get_object_or_404(Ediciones, Id=pk)
+            edicion = get_object_or_404(Ediciones, id=pk)
             serializer = self.get_serializer(edicion, data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -142,7 +142,7 @@ class EdicionesViewSet(viewsets.ModelViewSet):
 
     def partial_update(self, request, pk=None):
         try:
-            edicion = get_object_or_404(Ediciones, Id=pk)
+            edicion = get_object_or_404(Ediciones, id=pk)
             serializer = self.get_serializer(edicion, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -153,7 +153,7 @@ class EdicionesViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, pk=None):
         try:
-            edicion = get_object_or_404(Ediciones, Id=pk)
+            edicion = get_object_or_404(Ediciones, id=pk)
             if hasattr(edicion, 'EdicionesId') and edicion.MunecaId is not None:
                 edicion.MuniecaId.clear()
 
@@ -296,7 +296,7 @@ class SkullectorViewSet(viewsets.ModelViewSet):
     
     def update(self, request, pk=None):
         try:
-            personaje = get_object_or_404(Personajes, Id=pk)
+            personaje = get_object_or_404(Personajes, id=pk)
             serializer = self.get_serializer(personaje, data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -306,7 +306,7 @@ class SkullectorViewSet(viewsets.ModelViewSet):
 
     def partial_update(self, request, pk=None):
         try:
-            personaje = get_object_or_404(Personajes, Id=pk)
+            personaje = get_object_or_404(Personajes, id=pk)
             serializer = self.get_serializer(personaje, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -316,10 +316,9 @@ class SkullectorViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, pk=None):
         try:
-            skullector = get_object_or_404(Skullectors, Id=pk)
+            skullector = get_object_or_404(Skullectors, id=pk)
             if hasattr(skullector, 'muneca') and skullector.muneca is not None:
                 skullector.muneca.clear()
-
             skullector.delete()
 
             return Response({"message": f"Skullector con ID {pk} eliminado correctamente"}, status=status.HTTP_204_NO_CONTENT)
@@ -472,7 +471,7 @@ class PersonajesViewSet(viewsets.ModelViewSet):
 
     def update(self, request, pk=None):
         try:
-            personaje = get_object_or_404(Personajes, Id=pk)
+            personaje = get_object_or_404(Personajes, id=pk)
             serializer = self.get_serializer(personaje, data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -482,7 +481,7 @@ class PersonajesViewSet(viewsets.ModelViewSet):
 
     def partial_update(self, request, pk=None):
         try:
-            personaje = get_object_or_404(Personajes, Id=pk)
+            personaje = get_object_or_404(Personajes, id=pk)
             serializer = self.get_serializer(personaje, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -493,12 +492,7 @@ class PersonajesViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, pk=None):
         try:
-            personaje = get_object_or_404(Personajes, Id=pk)
-            if hasattr(personaje, 'ediciones') and personaje.ediciones is not None:
-                personaje.ediciones.clear()
-            if hasattr(personaje, 'mascota') and personaje.mascota is not None:
-                personaje.mascota.clear()
-
+            personaje = get_object_or_404(Personajes, id=pk)
             personaje.delete()
 
             return Response({"message": f"Personaje con ID {pk} eliminado correctamente"}, status=status.HTTP_204_NO_CONTENT)
